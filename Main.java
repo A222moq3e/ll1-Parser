@@ -237,7 +237,7 @@ public class Main extends javax.swing.JFrame {
             String parsingTableString = parser.getParsingTableAsString();
             parsingTableTextArea.setText(parsingTableString);
         } else {
-            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is inherently not a LL(1) grammar.");
+            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
         }
 
         parser.printAllResults();
@@ -271,7 +271,7 @@ public class Main extends javax.swing.JFrame {
             String parsingTableString = parser.getParsingTableAsString();
             parsingTableTextArea.setText(parsingTableString);
         } else {
-            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is inherently not a LL(1) grammar.");
+            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
         }
 
         parser.printAllResults();
@@ -305,7 +305,7 @@ public class Main extends javax.swing.JFrame {
             String parsingTableString = parser.getParsingTableAsString();
             parsingTableTextArea.setText(parsingTableString);
         } else {
-            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is inherently not a LL(1) grammar.");
+            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
         }
 
         parser.printAllResults();
