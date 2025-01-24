@@ -49,8 +49,7 @@ public class Main extends javax.swing.JFrame {
         setTitle("Grammar Parser");
         getContentPane().setBackground(new Color(240, 240, 245));
 
-        Font titleFont = new Font("Segoe UI", Font.BOLD, 14);
-        Font contentFont = new Font("Segoe UI", Font.PLAIN, 13);
+        Font contentFont = new Font("Tahoma", Font.PLAIN, 13);
 
         customizeTextArea(grammarTextArea, contentFont);
         customizeTextArea(firstSetsTextArea, contentFont);
@@ -76,7 +75,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void customizeButton(JButton button) {
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        button.setFont(new Font("Tahoma", Font.BOLD, 12));
         button.setBackground(new Color(70, 130, 180));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
@@ -100,7 +99,7 @@ public class Main extends javax.swing.JFrame {
                 title,
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
-                new Font("Segoe UI", Font.BOLD, 12),
+                new Font("Tahoma", Font.BOLD, 12),
                 new Color(70, 130, 180)
         ));
     }
@@ -110,8 +109,8 @@ public class Main extends javax.swing.JFrame {
         grammarScrollPane = new JScrollPane();
         grammarTextArea = new JTextArea();
         runInputButton = new JButton();
-        runEx1Button = new JButton();
-        runEx2Button = new JButton();
+        runEx1Button = new JButton(); //  for Example Normal LL1 Grammar
+        runEx2Button = new JButton();//  for Example Ambiguous Grammar
         firstSetsScrollPane = new JScrollPane();
         firstSetsTextArea = new JTextArea();
         followSetsScrollPane = new JScrollPane();
@@ -124,27 +123,27 @@ public class Main extends javax.swing.JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int colSize = 25;
         grammarTextArea.setColumns(colSize);
-        grammarTextArea.setFont(new Font("Segoe UI", 0, 14));
+        grammarTextArea.setFont(new Font("Tahoma", 0, 14));
         grammarTextArea.setRows(5);
-        grammarTextArea.setText("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )");
+        grammarTextArea.setText("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )"); // Default Grammar
         grammarScrollPane.setViewportView(grammarTextArea);
 
         runInputButton.setText("Run Input");
         runInputButton.addActionListener(evt -> runInputButtonActionPerformed(evt));
 
-        runEx1Button.setText("Run Ex1");
+        runEx1Button.setText("Run Ex1 (LL1 Grammar)");
         runEx1Button.addActionListener(evt -> runEx1ButtonActionPerformed(evt));
 
-        runEx2Button.setText("Run Ex2");
+        runEx2Button.setText("Run Ex2 (ambiguous Grammar)");
         runEx2Button.addActionListener(evt -> runEx2ButtonActionPerformed(evt));
 
         firstSetsTextArea.setColumns(colSize);
-        firstSetsTextArea.setFont(new Font("Segoe UI", 0, 14));
+        firstSetsTextArea.setFont(new Font("Tahoma", 0, 14));
         firstSetsTextArea.setRows(5);
         firstSetsScrollPane.setViewportView(firstSetsTextArea);
 
         followSetsTextArea.setColumns(colSize);
-        followSetsTextArea.setFont(new Font("Segoe UI", 0, 14));
+        followSetsTextArea.setFont(new Font("Tahoma", 0, 14));
         followSetsTextArea.setRows(5);
         followSetsScrollPane.setViewportView(followSetsTextArea);
 
