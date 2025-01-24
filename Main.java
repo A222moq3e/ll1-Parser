@@ -6,30 +6,34 @@ import java.util.Set;
 
 /**
  * authors:
- * @author abdullah bin ammar
+ * @author Abdullah Khalid Bin Ammar
+ * @author Abdullah Altamimi
+ * @author Abdulrahim alfaifi
  * @author
- * @author
- * @author
+ */
+/**
+ * Requriments:
+ * Implement LL(1) parser and print LL(1) parsing table. 
+    •	The input shall be a simple grammar that is free from left recursion, left factoring.
+    •	Compute the First, Follow for all variables. (3 Marks)
+    •	Print LL(1) parsing table (3 Marks)
+    •	If the resulting parsing table contains multiply defined entries in any cell then print  “The grammar is ambiguous or it is inherently not a LL(1) grammar” (2 Marks)
+    •	Include the full code in the report (1 Mark)
+    •	Test your program for at least two different examples and print the results in the report. (1 Mark)
  */
 
 public class Main extends javax.swing.JFrame {
+    private JButton runInputButton;
     private JButton runEx1Button;
     private JButton runEx2Button;
-    private JLabel firstSetsLabel;
-    private JLabel followSetsLabel;
-    private JLabel parsingTableLabel;
-    private JLabel grammar1Label;
-    private JLabel grammar2Label;
-    private JScrollPane grammar1ScrollPane;
+    private JScrollPane grammarScrollPane;
     private JScrollPane firstSetsScrollPane;
     private JScrollPane followSetsScrollPane;
-    private JScrollPane grammar2ScrollPane;
     private JScrollPane parsingTableScrollPane;
-    private JTextArea grammar1TextArea;
+    private JTextArea grammarTextArea;
     private JTextArea firstSetsTextArea;
     private JTextArea followSetsTextArea;
     private JTextArea parsingTableTextArea;
-    private JTextArea grammar2TextArea;
     private JSeparator inputSeparator;
     private JSeparator outputSeparator;
 
@@ -48,25 +52,18 @@ public class Main extends javax.swing.JFrame {
         Font titleFont = new Font("Segoe UI", Font.BOLD, 14);
         Font contentFont = new Font("Segoe UI", Font.PLAIN, 13);
 
-        firstSetsLabel.setFont(titleFont);
-        followSetsLabel.setFont(titleFont);
-        parsingTableLabel.setFont(titleFont);
-        grammar1Label.setFont(titleFont);
-        grammar2Label.setFont(titleFont);
-
-        customizeTextArea(grammar1TextArea, contentFont);
+        customizeTextArea(grammarTextArea, contentFont);
         customizeTextArea(firstSetsTextArea, contentFont);
         customizeTextArea(followSetsTextArea, contentFont);
         customizeTextArea(parsingTableTextArea, contentFont);
-        customizeTextArea(grammar2TextArea, contentFont);
 
+        customizeButton(runInputButton);
         customizeButton(runEx1Button);
         customizeButton(runEx2Button);
 
-        customizeScrollPane(grammar1ScrollPane, "Grammar 1");
-        customizeScrollPane(firstSetsScrollPane, "first Sets");
-        customizeScrollPane(followSetsScrollPane, "follow Sets");
-        customizeScrollPane(grammar2ScrollPane, "Grammar 2");
+        customizeScrollPane(grammarScrollPane, "Grammar");
+        customizeScrollPane(firstSetsScrollPane, "First Sets");
+        customizeScrollPane(followSetsScrollPane, "Follow Sets");
         customizeScrollPane(parsingTableScrollPane, "Parsing Table");
     }
 
@@ -83,7 +80,7 @@ public class Main extends javax.swing.JFrame {
         button.setBackground(new Color(70, 130, 180));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(new RoundedBorder(5, new Color(70, 130, 180)));
+        // button.setBorder(new RoundedBorder(5, new Color(70, 130, 180)));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -110,69 +107,50 @@ public class Main extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-        grammar1ScrollPane = new JScrollPane();
-        grammar1TextArea = new JTextArea();
+        grammarScrollPane = new JScrollPane();
+        grammarTextArea = new JTextArea();
+        runInputButton = new JButton();
         runEx1Button = new JButton();
+        runEx2Button = new JButton();
         firstSetsScrollPane = new JScrollPane();
         firstSetsTextArea = new JTextArea();
-        firstSetsLabel = new JLabel();
         followSetsScrollPane = new JScrollPane();
         followSetsTextArea = new JTextArea();
-        followSetsLabel = new JLabel();
-        parsingTableLabel = new JLabel();
         parsingTableScrollPane = new JScrollPane();
         parsingTableTextArea = new JTextArea();
-        grammar2ScrollPane = new JScrollPane();
-        grammar2TextArea = new JTextArea();
-        grammar1Label = new JLabel();
-        runEx2Button = new JButton();
-        grammar2Label = new JLabel();
         inputSeparator = new JSeparator();
         outputSeparator = new JSeparator();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int colSize = 25;
-        grammar1TextArea.setColumns(colSize);
-        grammar1TextArea.setFont(new Font("Segoe UI", 0, 14));
-        grammar1TextArea.setRows(5);
-        grammar1TextArea.setText("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )");
-        grammar1ScrollPane.setViewportView(grammar1TextArea);
+        grammarTextArea.setColumns(colSize);
+        grammarTextArea.setFont(new Font("Segoe UI", 0, 14));
+        grammarTextArea.setRows(5);
+        grammarTextArea.setText("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )");
+        grammarScrollPane.setViewportView(grammarTextArea);
 
-        runEx1Button.setText("Run Input1");
+        runInputButton.setText("Run Input");
+        runInputButton.addActionListener(evt -> runInputButtonActionPerformed(evt));
+
+        runEx1Button.setText("Run Ex1");
         runEx1Button.addActionListener(evt -> runEx1ButtonActionPerformed(evt));
+
+        runEx2Button.setText("Run Ex2");
+        runEx2Button.addActionListener(evt -> runEx2ButtonActionPerformed(evt));
 
         firstSetsTextArea.setColumns(colSize);
         firstSetsTextArea.setFont(new Font("Segoe UI", 0, 14));
         firstSetsTextArea.setRows(5);
         firstSetsScrollPane.setViewportView(firstSetsTextArea);
 
-        firstSetsLabel.setText("FIRST Sets:");
-
         followSetsTextArea.setColumns(colSize);
         followSetsTextArea.setFont(new Font("Segoe UI", 0, 14));
         followSetsTextArea.setRows(5);
         followSetsScrollPane.setViewportView(followSetsTextArea);
 
-        followSetsLabel.setText("Follow Sets:");
-
-        parsingTableLabel.setText("Parsing Table");
-
         parsingTableTextArea.setColumns(colSize);
         parsingTableTextArea.setRows(5);
         parsingTableScrollPane.setViewportView(parsingTableTextArea);
-
-        grammar2TextArea.setColumns(colSize);
-        grammar2TextArea.setFont(new Font("Segoe UI", 0, 14));
-        grammar2TextArea.setRows(5);
-        grammar2TextArea.setText("S -> ( L ) | a\nL -> L | a");
-        grammar2ScrollPane.setViewportView(grammar2TextArea);
-
-        grammar1Label.setText("Grammar#1");
-
-        runEx2Button.setText("Run Input2");
-        runEx2Button.addActionListener(evt -> runEx2ButtonActionPerformed(evt));
-
-        grammar2Label.setText("Grammar#2");
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -184,66 +162,47 @@ public class Main extends javax.swing.JFrame {
                                         .addComponent(outputSeparator)
                                         .addComponent(inputSeparator)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(parsingTableLabel)
+                                                .addComponent(grammarScrollPane, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(runInputButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(runEx1Button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(runEx2Button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                                         .addComponent(parsingTableScrollPane, GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
-                                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(firstSetsLabel)
-                                                                        .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(grammar1Label)
-                                                                                .addGap(48, 48, 48)
-                                                                                .addComponent(runEx1Button))
-                                                                        .addComponent(grammar1ScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                                                        .addComponent(firstSetsScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                                                .addComponent(firstSetsScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                                                 .addGap(18, 18, 18)
-                                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(followSetsScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                                                        .addComponent(grammar2ScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                                                        .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(grammar2Label)
-                                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                .addComponent(runEx2Button))
-                                                                        .addComponent(followSetsLabel))))
+                                                                .addComponent(followSetsScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                                                 .addGap(17, 17, 17))))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(parsingTableScrollPane)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(grammarScrollPane, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(14, 14, 14)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(grammar1Label)
-                                                        .addComponent(runEx2Button)))
-                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(runEx1Button)
-                                                        .addComponent(grammar2Label))))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(grammar1ScrollPane, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                                        .addComponent(grammar2ScrollPane))
+                                                .addComponent(runInputButton)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(runEx1Button)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(runEx2Button)))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(inputSeparator, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(firstSetsLabel)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(firstSetsScrollPane, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(followSetsLabel)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(followSetsScrollPane)))
+                                        .addComponent(firstSetsScrollPane, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(followSetsScrollPane))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(outputSeparator, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(parsingTableLabel)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(parsingTableScrollPane, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -251,14 +210,14 @@ public class Main extends javax.swing.JFrame {
         pack();
     }
 
-    private void runEx1ButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Button 1 clicked");
+    private void runInputButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("Run Input button clicked");
         firstSetsTextArea.setText("");
         followSetsTextArea.setText("");
         parsingTableTextArea.setText("");
         LL1P parser = new LL1P();
 
-        String grammar = grammar1TextArea.getText();
+        String grammar = grammarTextArea.getText();
 
         parser.readGrammarFromString(grammar);
         parser.processGrammar();
@@ -281,17 +240,52 @@ public class Main extends javax.swing.JFrame {
         }
 
         parser.printAllResults();
-        System.out.println("Button 1 processing completed");
+        System.out.println("Run Input button processing completed");
+    }
+
+    private void runEx1ButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("Run Ex1 button clicked");
+        firstSetsTextArea.setText("");
+        followSetsTextArea.setText("");
+        parsingTableTextArea.setText("");
+        LL1P parser = new LL1P();
+
+        String grammar = "E -> T E'\nE' -> + T E' | ε\nT -> F T'\nT' -> * F T' | ε\nF -> ( E ) | id";
+        grammarTextArea.setText(grammar);
+
+        parser.readGrammarFromString(grammar);
+        parser.processGrammar();
+
+        Map<String, Set<String>> firstSets = parser.getFirstSets();
+        for (String nonTerminal : firstSets.keySet()) {
+            firstSetsTextArea.append(nonTerminal + " : " + firstSets.get(nonTerminal) + "\n");
+        }
+
+        Map<String, Set<String>> followSets = parser.getFollowSets();
+        for (String nonTerminal : followSets.keySet()) {
+            followSetsTextArea.append(nonTerminal + " : " + followSets.get(nonTerminal) + "\n");
+        }
+
+        if (parser.isLL1Grammar()) {
+            String parsingTableString = parser.getParsingTableAsString();
+            parsingTableTextArea.setText(parsingTableString);
+        } else {
+            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is inherently not a LL(1) grammar.");
+        }
+
+        parser.printAllResults();
+        System.out.println("Run Ex1 button processing completed");
     }
 
     private void runEx2ButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Button 2 clicked");
+        System.out.println("Run Ex2 button clicked");
         firstSetsTextArea.setText("");
         followSetsTextArea.setText("");
         parsingTableTextArea.setText("");
         LL1P parser = new LL1P();
 
-        String grammar = grammar2TextArea.getText();
+        String grammar = "S -> ( L ) | a\nL -> L L'\nL' -> ) S L' |  ε";
+        grammarTextArea.setText(grammar);
 
         parser.readGrammarFromString(grammar);
         parser.processGrammar();
@@ -314,7 +308,7 @@ public class Main extends javax.swing.JFrame {
         }
 
         parser.printAllResults();
-        System.out.println("Button 2 processing completed");
+        System.out.println("Run Ex2 button processing completed");
     }
 
     public static void main(String args[]) {

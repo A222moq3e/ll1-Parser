@@ -2,12 +2,12 @@ import java.io.*;
 import java.util.*;
 
 class LL1P {
-    private Map<String, List<String>> grammarRules = new HashMap<>();
-    private Map<String, Set<String>> firstSets = new HashMap<>();
-    private Map<String, Set<String>> followSets = new HashMap<>();
-    private Map<String, Map<String, String>> parsingTable = new HashMap<>();
-    private List<String> terminalSymbols = new ArrayList<>();
-    private List<String> nonTerminalSymbols = new ArrayList<>();
+    private final Map<String, List<String>> grammarRules = new HashMap<>();
+    private final Map<String, Set<String>> firstSets = new HashMap<>();
+    private final Map<String, Set<String>> followSets = new HashMap<>();
+    private final Map<String, Map<String, String>> parsingTable = new HashMap<>();
+    private final List<String> terminalSymbols = new ArrayList<>();
+    private final List<String> nonTerminalSymbols = new ArrayList<>();
     private boolean isLL1Grammar = true;
 
     public void readGrammarFromString(String fileContent) {
@@ -173,6 +173,7 @@ class LL1P {
         }
         System.out.println("Parsing table: " + parsingTable);
     }
+
     public void printParsingTable() {
         int columnWidth = 20;
 
@@ -232,9 +233,7 @@ class LL1P {
         System.out.println("Parsing Table:");
         printParsingTable();
     }
-    
 
-    
     public String getParsingTableAsString() {
         StringBuilder table = new StringBuilder();
 
