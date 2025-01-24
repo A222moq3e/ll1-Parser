@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LL1P2 {
+public class LL1P2 implements LL1Interface {
 
     private final Map<String, List<String>> grammarRules = new LinkedHashMap<>();
     private final Map<String, Set<String>> firstSets = new HashMap<>();
@@ -10,17 +10,18 @@ public class LL1P2 {
     private final Set<String> terminalSymbols = new HashSet<>();
     private String startSymbol;
 
+    @Override
     public void readGrammarFromString(String grammarInput) {
         String[] lines = grammarInput.split("\\n");
         for (String line : lines) {
-            String[] parts = line.split("->");
-            String lhs = parts[0].trim();
-            String[] rhsParts = parts[1].split("\\|");
+            String[] sides = line.split("->");
+            String lhs = sides[0].trim();
+            String[] rhsSides = sides[1].split("\\|");
 
             nonTerminalSymbols.add(lhs);
             List<String> productions = new ArrayList<>();
 
-            for (String rhs : rhsParts) {
+            for (String rhs : rhsSides) {
                 String production = rhs.trim();
                 productions.add(production);
                 for (String symbol : production.split(" ")) {
@@ -37,6 +38,7 @@ public class LL1P2 {
         startSymbol = lines[0].split("->")[0].trim();
     }
 
+    @Override
     public void computeFirstSets() {
         for (String nonTerminal : nonTerminalSymbols) {
             firstSets.put(nonTerminal, new HashSet<>());
@@ -67,6 +69,7 @@ public class LL1P2 {
         } while (changed);
     }
 
+    @Override
     public void computeFollowSets() {
         for (String nonTerminal : nonTerminalSymbols) {
             followSets.put(nonTerminal, new HashSet<>());
@@ -103,6 +106,7 @@ public class LL1P2 {
         } while (changed);
     }
 
+    @Override
     public void constructParsingTable() {
         for (String nonTerminal : nonTerminalSymbols) {
             parsingTable.put(nonTerminal, new HashMap<>());
@@ -146,6 +150,7 @@ public class LL1P2 {
         }
     }
 
+    @Override
     public void printParsingTable() {
         System.out.print("\t");
         for (String terminal : terminalSymbols) {
@@ -163,6 +168,7 @@ public class LL1P2 {
         }
     }
 
+    @Override
     public void printAllResults() {
         System.out.println("first Sets:");
         for (Map.Entry<String, Set<String>> entry : firstSets.entrySet()) {
@@ -178,6 +184,47 @@ public class LL1P2 {
 
         System.out.println("Parsing Table:");
         printParsingTable();
+    }
+
+    @Override
+    public Map<String, Set<String>> getFirstSets() {
+        return firstSets;
+    }
+
+    @Override
+    public Map<String, Set<String>> getFollowSets() {
+        return followSets;
+    }
+
+    @Override
+    public Map<String, Map<String, String>> getParsingTable() {
+        return parsingTable;
+    }
+
+    @Override
+    public boolean isLL1Grammar() {
+        return true; // Adjust this based on your implementation
+    }
+
+    @Override
+    public String getParsingTableAsString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\t");
+        for (String terminal : terminalSymbols) {
+            sb.append(terminal).append("\t");
+        }
+        sb.append("\n");
+
+        for (String nonTerminal : nonTerminalSymbols) {
+            sb.append(nonTerminal).append("\t");
+            for (String terminal : terminalSymbols) {
+                String rule = parsingTable.get(nonTerminal).get(terminal);
+                sb.append((rule != null ? rule : "")).append("\t");
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
     public static void main(String[] args) {

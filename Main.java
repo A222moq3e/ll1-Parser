@@ -122,31 +122,33 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int colSize = 25;
+        // Input Grammar Text Area
         grammarTextArea.setColumns(colSize);
         grammarTextArea.setFont(new Font("Tahoma", 0, 14));
         grammarTextArea.setRows(5);
         grammarTextArea.setText("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )"); // Default Grammar
         grammarScrollPane.setViewportView(grammarTextArea);
-
+        // Run Input Button
         runInputButton.setText("Run Input");
         runInputButton.addActionListener(evt -> runInputButtonActionPerformed(evt));
-
+        // Run Ex1 Button
         runEx1Button.setText("Run Ex1 (LL1 Grammar)");
         runEx1Button.addActionListener(evt -> runEx1ButtonActionPerformed(evt));
-
+        // Run Ex2 Button
         runEx2Button.setText("Run Ex2 (ambiguous Grammar)");
         runEx2Button.addActionListener(evt -> runEx2ButtonActionPerformed(evt));
-
+        // First Sets Output Text Area
         firstSetsTextArea.setColumns(colSize);
         firstSetsTextArea.setFont(new Font("Tahoma", 0, 14));
         firstSetsTextArea.setRows(5);
         firstSetsScrollPane.setViewportView(firstSetsTextArea);
-
+        
+        // Output Follow Sets Output Text Area
         followSetsTextArea.setColumns(colSize);
         followSetsTextArea.setFont(new Font("Tahoma", 0, 14));
         followSetsTextArea.setRows(5);
         followSetsScrollPane.setViewportView(followSetsTextArea);
-
+        // Output Parsing Table Text Area
         parsingTableTextArea.setColumns(colSize);
         parsingTableTextArea.setRows(5);
         parsingTableScrollPane.setViewportView(parsingTableTextArea);
