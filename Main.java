@@ -220,29 +220,30 @@ public class Main extends javax.swing.JFrame {
         followSetsTextArea.setText("");
         parsingTableTextArea.setText("");
         LL1P parser = new LL1P();
-
+        // Get String grammar from input text area
         String grammar = grammarTextArea.getText();
 
         parser.readGrammarFromString(grammar);
         parser.processGrammar();
-
+        // Output First Sets in the text area
         Map<String, Set<String>> firstSets = parser.getFirstSets();
         for (String nonTerminal : firstSets.keySet()) {
             firstSetsTextArea.append(nonTerminal + " : " + firstSets.get(nonTerminal) + "\n");
         }
-
+        
+        // Output Follow Sets in the text area
         Map<String, Set<String>> followSets = parser.getFollowSets();
         for (String nonTerminal : followSets.keySet()) {
             followSetsTextArea.append(nonTerminal + " : " + followSets.get(nonTerminal) + "\n");
         }
-
+        // Output Parsing Table in the text area Of Parsing Table
         if (parser.isLL1Grammar()) {
             String parsingTableString = parser.getParsingTableAsString();
             parsingTableTextArea.setText(parsingTableString);
         } else {
             parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
         }
-
+        // Print All Results in Terminal
         parser.printAllResults();
         System.out.println("Run Input button processing completed");
     }
@@ -259,12 +260,12 @@ public class Main extends javax.swing.JFrame {
 
         parser.readGrammarFromString(grammar);
         parser.processGrammar();
-
+        // Output First Sets in the text area
         Map<String, Set<String>> firstSets = parser.getFirstSets();
         for (String nonTerminal : firstSets.keySet()) {
             firstSetsTextArea.append(nonTerminal + " : " + firstSets.get(nonTerminal) + "\n");
         }
-
+       // Output Follow Sets in the text area
         Map<String, Set<String>> followSets = parser.getFollowSets();
         for (String nonTerminal : followSets.keySet()) {
             followSetsTextArea.append(nonTerminal + " : " + followSets.get(nonTerminal) + "\n");
