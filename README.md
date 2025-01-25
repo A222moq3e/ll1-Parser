@@ -19,13 +19,13 @@ The project consists of the following main files:
 ## How to Run
 1. **Clone the repository**:
     ```sh
-    git clone <repository-url>
-    cd <repository-directory>
+    git clone https://github.com/A222moq3e/ll1-Parser
+    cd ll1-Parser
     ```
 
 2. **Compile the Java files**:
     ```sh
-    javac Main.java LL1P.java LL1P2.java LL1Interface.java
+    javac Main.java
     ```
 
 3. **Run the application**:
