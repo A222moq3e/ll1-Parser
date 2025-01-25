@@ -238,9 +238,11 @@ public class Main extends javax.swing.JFrame {
         }
         // Output Parsing Table in the text area Of Parsing Table
         if (parser.isLL1Grammar()) {
+            System.out.println("The grammar is LL(1)");
             String parsingTableString = parser.getParsingTableAsString();
             parsingTableTextArea.setText(parsingTableString);
         } else {
+            System.out.println("The grammar is ambiguous or it is not a LL(1) grammar :(");
             parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
         }
         // Print All Results in Terminal
