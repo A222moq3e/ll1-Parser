@@ -245,7 +245,7 @@ public class Main extends javax.swing.JFrame {
             parsingTableTextArea.setText(parsingTableString);
         } else {
             System.out.println("The grammar is ambiguous or it is not a LL(1) grammar :(");
-            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
+            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(");
         }
         // Print All Results in Terminal
         parser.printAllResults();
@@ -264,7 +264,7 @@ public class Main extends javax.swing.JFrame {
     
     private void runEx2ButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String nameButton = evt.getActionCommand();
-        ButtonAction("S -> ( L ) | a\nL -> L L'\nL' -> ) S L' |  ε", nameButton);
+        ButtonAction("S -> ( Q ) | a\nQ -> Q Q'\nQ' -> ) S A B D U L L A H L' |  ε", nameButton);
     }
 
     public static void main(String args[]) {
