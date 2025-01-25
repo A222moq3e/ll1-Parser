@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-class LL1P {
+class LL1P implements LL1Interface {
     private final Map<String, List<String>> grammarRules = new HashMap<>();
     private final Map<String, Set<String>> firstSets = new HashMap<>();
     private final Map<String, Set<String>> followSets = new HashMap<>();
@@ -9,23 +9,27 @@ class LL1P {
     private final List<String> terminalSymbols = new ArrayList<>();
     private final List<String> nonTerminalSymbols = new ArrayList<>();
     private boolean isLL1Grammar = true;
+    private final String absolineSymbole = "ε";
 
+    @Override
     public void readGrammarFromString(String fileContent) {
+        // clear all Maps
         grammarRules.clear();
         terminalSymbols.clear();
         nonTerminalSymbols.clear();
-
+        // split lines of the grammar
         String[] lines = fileContent.split("\n");
 
         for (String line : lines) {
             if (line.trim().isEmpty()) continue;
 
-            String[] parts = line.split("->");
-            if (parts.length != 2) {
+            String[] sides = line.split("->");
+            if (sides.length != 2) {
+                // if it is not 2 sides then it is not a valid grammar so throw error
                 throw new IllegalArgumentException("Invalid grammar format: " + line);
             }
-
-            String nonTerminal = parts[0].trim();
+            // left hand side of the production (nonTerminals)
+            String nonTerminal = sides[0].trim();
             nonTerminalSymbols.add(nonTerminal);
             grammarRules.put(nonTerminal, new ArrayList<>());
         }
@@ -33,9 +37,9 @@ class LL1P {
         for (String line : lines) {
             if (line.trim().isEmpty()) continue;
 
-            String[] parts = line.split("->");
-            String nonTerminal = parts[0].trim();
-            String[] productions = parts[1].trim().split("\\|");
+            String[] sides = line.split("->");
+            String nonTerminal = sides[0].trim();
+            String[] productions = sides[1].trim().split("\\|");
 
             for (String production : productions) {
                 grammarRules.get(nonTerminal).add(production.trim());
@@ -43,7 +47,7 @@ class LL1P {
                 for (String symbol : production.trim().split("\\s+")) {
                     symbol = symbol.trim();
                     if (!nonTerminalSymbols.contains(symbol) && 
-                        !symbol.equals("ε") && 
+                        !symbol.equals(absolineSymbole) && 
                         !symbol.isEmpty()) {
                         terminalSymbols.add(symbol);
                     }
@@ -64,7 +68,8 @@ class LL1P {
         // System.out.println("Constructed Parsing Table: " + parsingTable);
     }
 
-    private void computeFirstSets() {
+    @Override
+    public void computeFirstSets() {
         for (String nonTerminal : nonTerminalSymbols) {
             firstSets.put(nonTerminal, new HashSet<>());
         }
@@ -94,7 +99,7 @@ class LL1P {
                 break;
             } else {
                 result.addAll(firstSets.get(symbol));
-                if (!firstSets.get(symbol).contains("ε")) {
+                if (!firstSets.get(symbol).contains(absolineSymbole)) {
                     break;
                 }
             }
@@ -102,7 +107,8 @@ class LL1P {
         return result;
     }
 
-    private void computeFollowSets() {
+    @Override
+    public void computeFollowSets() {
         for (String nonTerminal : nonTerminalSymbols) {
             followSets.put(nonTerminal, new HashSet<>());
         }
@@ -122,10 +128,10 @@ class LL1P {
                             if (i + 1 < symbols.length) {
                                 Set<String> firstOfNext = computeFirstOfProduction(String.join(" ", Arrays.copyOfRange(symbols, i + 1, symbols.length)));
                                 follow.addAll(firstOfNext);
-                                follow.remove("ε");
+                                follow.remove(absolineSymbole);
                             }
 
-                            if (i + 1 == symbols.length || computeFirstOfProduction(String.join(" ", Arrays.copyOfRange(symbols, i + 1, symbols.length))).contains("ε")) {
+                            if (i + 1 == symbols.length || computeFirstOfProduction(String.join(" ", Arrays.copyOfRange(symbols, i + 1, symbols.length))).contains(absolineSymbole)) {
                                 follow.addAll(followSets.get(nonTerminal));
                             }
 
@@ -140,7 +146,8 @@ class LL1P {
         System.out.println("FOLLOW sets: " + followSets);
     }
 
-    private void constructParsingTable() {
+    @Override
+    public void constructParsingTable() {
         parsingTable.clear();
         for (String nonTerminal : nonTerminalSymbols) {
             parsingTable.put(nonTerminal, new HashMap<>());
@@ -150,7 +157,7 @@ class LL1P {
             for (String production : grammarRules.get(nonTerminal)) {
                 Set<String> first = computeFirstOfProduction(production);
                 for (String terminal : first) {
-                    if (!terminal.equals("ε")) {
+                    if (!terminal.equals(absolineSymbole)) {
                         if (parsingTable.get(nonTerminal).containsKey(terminal)) {
                             System.out.println("The grammar is ambiguous or it is inherently not a LL(1) grammar.");
                             isLL1Grammar = false;
@@ -159,7 +166,7 @@ class LL1P {
                         parsingTable.get(nonTerminal).put(terminal, production);
                     }
                 }
-                if (first.contains("ε")) {
+                if (first.contains(absolineSymbole)) {
                     for (String follow : followSets.get(nonTerminal)) {
                         if (parsingTable.get(nonTerminal).containsKey(follow)) {
                             System.out.println("The grammar is ambiguous or it is inherently not a LL(1) grammar.");
@@ -174,6 +181,7 @@ class LL1P {
         System.out.println("Parsing table: " + parsingTable);
     }
 
+    @Override
     public void printParsingTable() {
         int columnWidth = 20;
 
@@ -207,6 +215,7 @@ class LL1P {
         }
     }
 
+    @Override
     public void printAllResults() {
         System.out.println("first Sets:");
         for (String nonTerminal : firstSets.keySet()) {
@@ -234,47 +243,60 @@ class LL1P {
         printParsingTable();
     }
 
-    public String getParsingTableAsString() {
-        StringBuilder table = new StringBuilder();
-
-        int columnWidth = 25;
-
-        table.append(String.format("%-" + columnWidth + "s  ", ""));
-        for (String terminal : terminalSymbols) {
-            table.append(String.format("%-" + columnWidth + "s  ", terminal));
-        }
-        table.append("\n");
-
-        for (String nonTerminal : nonTerminalSymbols) {
-            table.append(String.format("%-" + columnWidth + "s", nonTerminal));
-            for (String terminal : terminalSymbols) {
-                String rule = parsingTable.get(nonTerminal).get(terminal);
-                if (rule != null) {
-                    table.append(String.format("%-" + columnWidth + "s", nonTerminal + " -> " + rule));
-                } else {
-                    table.append(String.format("%-" + columnWidth + "s", ""));
-                }
-            }
-            table.append("\n");
-        }
-
-        return table.toString();
-    }
-
+    @Override
     public Map<String, Set<String>> getFirstSets() {
         return firstSets;
     }
     
+    @Override
     public Map<String, Set<String>> getFollowSets() {
         return followSets;
     }
     
+    @Override
     public Map<String, Map<String, String>> getParsingTable() {
         return parsingTable;
     }
     
+    @Override
     public boolean isLL1Grammar() {
         return isLL1Grammar;
+    }
+
+    @Override
+    public String getParsingTableAsString() {
+        StringBuilder sb = new StringBuilder();
+        int columnWidth = 20;
+
+        sb.append(String.format("%-" + columnWidth + "s", ""));
+        for (String terminal : terminalSymbols) {
+            sb.append(String.format("%-" + columnWidth + "s", "|  " + terminal));
+        }
+        sb.append("\n");
+        sb.append(String.format("%-" + columnWidth + "s", ""));
+        for (String terminal : terminalSymbols) {
+            for (int i = 0; i < columnWidth - 1; i++) {
+                sb.append("_");
+            }
+            sb.append(" ");
+        }
+        sb.append("\n");
+
+        for (String nonTerminal : nonTerminalSymbols) {
+            sb.append(String.format("%-" + columnWidth + "s", nonTerminal));
+
+            for (String terminal : terminalSymbols) {
+                String rule = parsingTable.get(nonTerminal).get(terminal);
+                if (rule != null) {
+                    sb.append(String.format("%-" + columnWidth + "s", "|  " + nonTerminal + " -> " + rule));
+                } else {
+                    sb.append(String.format("%-" + columnWidth + "s", "|  "));
+                }
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }
 
