@@ -217,6 +217,7 @@ public class Main extends javax.swing.JFrame {
     }
     private void ButtonAction(String inputGrammar, String nameButton){
         System.out.println("Run"+nameButton+" button clicked");
+        grammarTextArea.setText(inputGrammar);
         firstSetsTextArea.setText("");
         followSetsTextArea.setText("");
         parsingTableTextArea.setText("");
@@ -258,7 +259,7 @@ public class Main extends javax.swing.JFrame {
 
     private void runEx1ButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String nameButton = evt.getActionCommand();
-        ButtonAction("E -> T E'\nE' -> + T E' | ε\nT -> F T'\nT' -> * F T' | ε\nF -> ( E ) | id",nameButton);
+        ButtonAction("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )",nameButton);
     }
     
     private void runEx2ButtonActionPerformed(java.awt.event.ActionEvent evt) {
