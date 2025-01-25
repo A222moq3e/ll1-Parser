@@ -42,11 +42,13 @@ public class Main extends javax.swing.JFrame {
     String MainFont = "Tahoma";
 
     public Main() {
+        System.out.println("Running APP...");
         initComponents(); // Initialize all components
         setPreferredSize(new Dimension(1200, 800));  // Set the window size
         pack(); // To fit its content
         setLocationRelativeTo(null); // Center the window on the screen
         customizeComponents();
+        System.out.println("Running Completed, Enjoy LL1 Parser :)");
     }
 
     private void customizeComponents() {
@@ -213,15 +215,14 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }
-
-    private void runInputButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Run Input button clicked");
+    private void ButtonAction(String inputGrammar, String nameButton){
+        System.out.println("Run"+nameButton+" button clicked");
         firstSetsTextArea.setText("");
         followSetsTextArea.setText("");
         parsingTableTextArea.setText("");
         LL1P parser = new LL1P();
         // Get String grammar from input text area
-        String grammar = grammarTextArea.getText();
+        String grammar = inputGrammar;
 
         parser.readGrammarFromString(grammar);
         parser.processGrammar();
@@ -247,75 +248,22 @@ public class Main extends javax.swing.JFrame {
         }
         // Print All Results in Terminal
         parser.printAllResults();
-        System.out.println("Run Input button processing completed");
+        System.out.println("Run "+nameButton+" button processing completed");
+    }
+
+    private void runInputButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        String nameButton = evt.getActionCommand();
+        ButtonAction(grammarTextArea.getText(), nameButton);
     }
 
     private void runEx1ButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Run Ex1 button clicked");
-        firstSetsTextArea.setText("");
-        followSetsTextArea.setText("");
-        parsingTableTextArea.setText("");
-        LL1P parser = new LL1P();
-
-        String grammar = "E -> T E'\nE' -> + T E' | ε\nT -> F T'\nT' -> * F T' | ε\nF -> ( E ) | id";
-        grammarTextArea.setText(grammar);
-
-        parser.readGrammarFromString(grammar);
-        parser.processGrammar();
-        // Output First Sets in the text area
-        Map<String, Set<String>> firstSets = parser.getFirstSets();
-        for (String nonTerminal : firstSets.keySet()) {
-            firstSetsTextArea.append(nonTerminal + " : " + firstSets.get(nonTerminal) + "\n");
-        }
-       // Output Follow Sets in the text area
-        Map<String, Set<String>> followSets = parser.getFollowSets();
-        for (String nonTerminal : followSets.keySet()) {
-            followSetsTextArea.append(nonTerminal + " : " + followSets.get(nonTerminal) + "\n");
-        }
-
-        if (parser.isLL1Grammar()) {
-            String parsingTableString = parser.getParsingTableAsString();
-            parsingTableTextArea.setText(parsingTableString);
-        } else {
-            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
-        }
-
-        parser.printAllResults();
-        System.out.println("Run Ex1 button processing completed");
+        String nameButton = evt.getActionCommand();
+        ButtonAction("E -> T E'\nE' -> + T E' | ε\nT -> F T'\nT' -> * F T' | ε\nF -> ( E ) | id",nameButton);
     }
-
+    
     private void runEx2ButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Run Ex2 button clicked");
-        firstSetsTextArea.setText("");
-        followSetsTextArea.setText("");
-        parsingTableTextArea.setText("");
-        LL1P parser = new LL1P();
-
-        String grammar = "S -> ( L ) | a\nL -> L L'\nL' -> ) S L' |  ε";
-        grammarTextArea.setText(grammar);
-
-        parser.readGrammarFromString(grammar);
-        parser.processGrammar();
-
-        Map<String, Set<String>> firstSets = parser.getFirstSets();
-        for (String nonTerminal : firstSets.keySet()) {
-            firstSetsTextArea.append(nonTerminal + " : " + firstSets.get(nonTerminal) + "\n");
-        }
-
-        Map<String, Set<String>> followSets = parser.getFollowSets();
-        for (String nonTerminal : followSets.keySet()) {
-            followSetsTextArea.append(nonTerminal + " : " + followSets.get(nonTerminal) + "\n");
-        }
-
-        if (parser.isLL1Grammar()) {
-            String parsingTableString = parser.getParsingTableAsString();
-            parsingTableTextArea.setText(parsingTableString);
-        } else {
-            parsingTableTextArea.setText("Error: The grammar is ambiguous or it is not a LL(1) grammar :(.");
-        }
-
-        parser.printAllResults();
-        System.out.println("Run Ex2 button processing completed");
+        String nameButton = evt.getActionCommand();
+        ButtonAction("S -> ( L ) | a\nL -> L L'\nL' -> ) S L' |  ε", nameButton);
     }
 
     public static void main(String args[]) {
