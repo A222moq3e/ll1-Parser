@@ -23,63 +23,67 @@ import java.util.Set;
  */
 
 public class Main extends javax.swing.JFrame {
+    // all GUI components
     private JButton runInputButton;
     private JButton runEx1Button;
     private JButton runEx2Button;
-    private JScrollPane grammarScrollPane;
-    private JScrollPane firstSetsScrollPane;
-    private JScrollPane followSetsScrollPane;
-    private JScrollPane parsingTableScrollPane;
+    private JScrollPane grammarConainer;
+    private JScrollPane firstSetsContainer;
+    private JScrollPane followSetsContainer;
+    private JScrollPane parsingTableContainer;
     private JTextArea grammarTextArea;
     private JTextArea firstSetsTextArea;
     private JTextArea followSetsTextArea;
     private JTextArea parsingTableTextArea;
     private JSeparator inputSeparator;
     private JSeparator outputSeparator;
+    Color mainColor = new Color(70, 130, 180);
+    Color textAreaBGColor = new Color(248, 248, 255);
+    String MainFont = "Tahoma";
 
     public Main() {
-        initComponents();
-        setPreferredSize(new Dimension(1200, 800)); 
+        initComponents(); // Initialize all components
+        setPreferredSize(new Dimension(1200, 800));  // Set the window size
         pack(); // To fit its content
         setLocationRelativeTo(null); // Center the window on the screen
         customizeComponents();
     }
 
     private void customizeComponents() {
+        // some customizations for the components
         setTitle("Grammar Parser");
         getContentPane().setBackground(new Color(240, 240, 245));
 
-        Font contentFont = new Font("Tahoma", Font.PLAIN, 13);
 
-        customizeTextArea(grammarTextArea, contentFont);
-        customizeTextArea(firstSetsTextArea, contentFont);
-        customizeTextArea(followSetsTextArea, contentFont);
-        customizeTextArea(parsingTableTextArea, contentFont);
+        customizeTextArea(grammarTextArea);
+        customizeTextArea(firstSetsTextArea);
+        customizeTextArea(followSetsTextArea);
+        customizeTextArea(parsingTableTextArea);
 
         customizeButton(runInputButton);
         customizeButton(runEx1Button);
         customizeButton(runEx2Button);
 
-        customizeScrollPane(grammarScrollPane, "Grammar");
-        customizeScrollPane(firstSetsScrollPane, "First Sets");
-        customizeScrollPane(followSetsScrollPane, "Follow Sets");
-        customizeScrollPane(parsingTableScrollPane, "Parsing Table");
+        customizeContainer(grammarConainer, "Grammar");
+        customizeContainer(firstSetsContainer, "First Sets");
+        customizeContainer(followSetsContainer, "Follow Sets");
+        customizeContainer(parsingTableContainer, "Parsing Table");
     }
 
-    private void customizeTextArea(JTextArea textArea, Font font) {
-        textArea.setFont(font);
-        textArea.setBackground(new Color(252, 252, 255));
-        textArea.setBorder(new RoundedBorder(5, new Color(252, 252, 255)));
+    private void customizeTextArea(JTextArea textArea) {
+        Font contentFont = new Font(MainFont, Font.PLAIN, 14);
+        textArea.setFont(contentFont);
+        textArea.setBackground(textAreaBGColor);
+        textArea.setBorder(new RoundedBorder(5, new Color(252, 252, 255))); // only for radus
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
     }
 
     private void customizeButton(JButton button) {
-        button.setFont(new Font("Tahoma", Font.BOLD, 12));
-        button.setBackground(new Color(70, 130, 180));
+        button.setFont(new Font(MainFont, Font.BOLD, 12));
+        button.setBackground(mainColor);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        // button.setBorder(new RoundedBorder(5, new Color(70, 130, 180)));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -88,34 +92,35 @@ public class Main extends javax.swing.JFrame {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(70, 130, 180));
+                button.setBackground(mainColor);
             }
         });
     }
 
-    private void customizeScrollPane(JScrollPane scrollPane, String title) {
+    private void customizeContainer(JScrollPane scrollPane, String title) {
         scrollPane.setBorder(BorderFactory.createTitledBorder(
-                new RoundedBorder(5, new Color(70, 130, 180)),
+                new RoundedBorder(5, mainColor),
                 title,
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
-                new Font("Tahoma", Font.BOLD, 12),
-                new Color(70, 130, 180)
+                new Font(MainFont, Font.BOLD, 12),
+                mainColor
         ));
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-        grammarScrollPane = new JScrollPane();
-        grammarTextArea = new JTextArea();
+        // start building the GUI
+        grammarConainer = new JScrollPane(); // Input Grammar Pane
+        grammarTextArea = new JTextArea(); // Input Grammar Text Area
         runInputButton = new JButton();
         runEx1Button = new JButton(); //  for Example Normal LL1 Grammar
         runEx2Button = new JButton();//  for Example Ambiguous Grammar
-        firstSetsScrollPane = new JScrollPane();
+        firstSetsContainer = new JScrollPane();
         firstSetsTextArea = new JTextArea();
-        followSetsScrollPane = new JScrollPane();
+        followSetsContainer = new JScrollPane();
         followSetsTextArea = new JTextArea();
-        parsingTableScrollPane = new JScrollPane();
+        parsingTableContainer = new JScrollPane();
         parsingTableTextArea = new JTextArea();
         inputSeparator = new JSeparator();
         outputSeparator = new JSeparator();
@@ -124,10 +129,23 @@ public class Main extends javax.swing.JFrame {
         int colSize = 25;
         // Input Grammar Text Area
         grammarTextArea.setColumns(colSize);
-        grammarTextArea.setFont(new Font("Tahoma", 0, 14));
         grammarTextArea.setRows(5);
         grammarTextArea.setText("S -> A C\nA -> a B | ε\nB -> b C | ε\nC -> ( c )"); // Default Grammar
-        grammarScrollPane.setViewportView(grammarTextArea);
+        grammarConainer.setViewportView(grammarTextArea);
+        // First Sets Output Text Area
+        firstSetsTextArea.setColumns(colSize);
+        firstSetsTextArea.setRows(5);
+        firstSetsContainer.setViewportView(firstSetsTextArea);
+        
+        // Output Follow Sets Output Text Area
+        followSetsTextArea.setColumns(colSize);
+        followSetsTextArea.setRows(5);
+        followSetsContainer.setViewportView(followSetsTextArea);
+        // Output Parsing Table Text Area
+        parsingTableTextArea.setColumns(colSize);
+        parsingTableTextArea.setRows(5);
+        parsingTableContainer.setViewportView(parsingTableTextArea);
+
         // Run Input Button
         runInputButton.setText("Run Input");
         runInputButton.addActionListener(evt -> runInputButtonActionPerformed(evt));
@@ -137,21 +155,6 @@ public class Main extends javax.swing.JFrame {
         // Run Ex2 Button
         runEx2Button.setText("Run Ex2 (ambiguous Grammar)");
         runEx2Button.addActionListener(evt -> runEx2ButtonActionPerformed(evt));
-        // First Sets Output Text Area
-        firstSetsTextArea.setColumns(colSize);
-        firstSetsTextArea.setFont(new Font("Tahoma", 0, 14));
-        firstSetsTextArea.setRows(5);
-        firstSetsScrollPane.setViewportView(firstSetsTextArea);
-        
-        // Output Follow Sets Output Text Area
-        followSetsTextArea.setColumns(colSize);
-        followSetsTextArea.setFont(new Font("Tahoma", 0, 14));
-        followSetsTextArea.setRows(5);
-        followSetsScrollPane.setViewportView(followSetsTextArea);
-        // Output Parsing Table Text Area
-        parsingTableTextArea.setColumns(colSize);
-        parsingTableTextArea.setRows(5);
-        parsingTableScrollPane.setViewportView(parsingTableTextArea);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -163,7 +166,7 @@ public class Main extends javax.swing.JFrame {
                                         .addComponent(outputSeparator)
                                         .addComponent(inputSeparator)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(grammarScrollPane, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(grammarConainer, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(runInputButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -172,15 +175,15 @@ public class Main extends javax.swing.JFrame {
                                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(parsingTableScrollPane, GroupLayout.Alignment.LEADING)
+                                                        .addComponent(parsingTableContainer, GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(firstSetsScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                                                .addComponent(firstSetsContainer, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                                                 .addGap(18, 18, 18)
-                                                                .addComponent(followSetsScrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                                                                .addComponent(followSetsContainer, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                                                 .addGap(17, 17, 17))))
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(parsingTableScrollPane)
+                                .addComponent(parsingTableContainer)
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -188,7 +191,7 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(grammarScrollPane, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(grammarConainer, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(runInputButton)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -199,12 +202,12 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(inputSeparator, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(firstSetsScrollPane, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(followSetsScrollPane))
+                                        .addComponent(firstSetsContainer, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(followSetsContainer))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(outputSeparator, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(parsingTableScrollPane, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(parsingTableContainer, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
