@@ -13,7 +13,6 @@ This project implements an LL(1) parser that reads a simple grammar, computes th
 The project consists of the following main files:
 - `Main.java`: The main class that sets up the GUI and handles user interactions.
 - `LL1P.java`: The class that implements the LL(1) parser logic.
-- `LL1P2.java`: An alternative implementation of the LL(1) parser.
 - `LL1Interface.java`: An interface that defines the methods for the LL(1) parser.
 - `README.md`: This file, providing an overview and instructions.
 
