@@ -97,6 +97,7 @@ F -> ( E ) | id
 - Abdullah Khalid Bin Ammar
 - Abdullah Altamimi
 - Abdulrahim Alfaifi
+- M
 
 ## Requirements
 - Implement LL(1) parser and print LL(1) parsing table.
