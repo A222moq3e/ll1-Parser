@@ -157,9 +157,11 @@ class LL1P implements LL1Interface {
             for (String production : grammarRules.get(nonTerminal)) {
                 Set<String> first = computeFirstOfProduction(production);
                 for (String terminal : first) {
+            
                     if (!terminal.equals(absolineSymbole)) {
+                        // if deplecation is found in the parsing table, then the grammar is not LL(1)
                         if (parsingTable.get(nonTerminal).containsKey(terminal)) {
-                            System.out.println("The grammar is ambiguous or it is inherently not a LL(1) grammar.");
+                            System.out.println("Error: The grammar is ambiguous or it is not a LL(1) grammar :(");
                             isLL1Grammar = false;
                             return;
                         }
@@ -168,8 +170,9 @@ class LL1P implements LL1Interface {
                 }
                 if (first.contains(absolineSymbole)) {
                     for (String follow : followSets.get(nonTerminal)) {
+                        // if deplecation is found in the parsing table, then the grammar is not LL(1)
                         if (parsingTable.get(nonTerminal).containsKey(follow)) {
-                            System.out.println("The grammar is ambiguous or it is inherently not a LL(1) grammar.");
+                            System.out.println("Error: The grammar is ambiguous or it is not a LL(1) grammar :(");
                             isLL1Grammar = false;
                             return;
                         }
