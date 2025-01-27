@@ -187,7 +187,7 @@ class LL1P implements LL1Interface {
     @Override
     public void printParsingTable() {
         int columnWidth = 20;
-
+        // print the first row of terminal symbols in the parsing table
         System.out.printf("%-" + columnWidth + "s", "");
         for (String terminal : terminalSymbols) {
             System.out.printf("%-" + columnWidth + "s",  "|  "+terminal);
@@ -204,6 +204,7 @@ class LL1P implements LL1Interface {
         System.out.println();
 
         for (String nonTerminal : nonTerminalSymbols) {
+            // print the non-terminal symbol in the first column 
             System.out.printf("%-" + columnWidth + "s", nonTerminal);
 
             for (String terminal : terminalSymbols) {
